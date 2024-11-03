@@ -1,90 +1,91 @@
-"use client";
+'use client'
 
-import { useState } from "react";
-import {
-  AppBar,
-  Box,
-  Toolbar,
-  IconButton,
-  Typography,
-  Menu,
-  Container,
-  Button,
-  MenuItem,
-} from "@mui/material";
-import {
-  Menu as MenuIcon,
-  Brightness4,
-  Brightness7,
-} from "@mui/icons-material";
-import { useTheme } from "@/providers/ThemeProvider";
+import { useState } from 'react'
 
-const pages = ["Home", "About", "Projects", "Contact"];
+import { AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Button, MenuItem } from '@mui/material'
+
+import { Menu as MenuIcon, Brightness4, Brightness7 } from '@mui/icons-material'
+import { useTheme } from '@/src/providers/ThemeProvider'
+
+import { useRouter, usePathname } from '@/src/navigation'
+
+import { useSearchParams } from 'next/navigation'
+
+const pages = ['Home', 'About', 'Projects', 'Contact']
 
 const Header = () => {
-  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
-  const { toggleTheme, mode } = useTheme();
+  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null)
+  const { toggleTheme, mode } = useTheme()
+
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
-  };
+    setAnchorElNav(event.currentTarget)
+  }
 
   const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
+    setAnchorElNav(null)
+  }
+
+  const changeLanguage = (language: string) => {
+    const newSearchParams = new URLSearchParams(searchParams)
+    router.push(`${pathname}?${newSearchParams.toString()}`, { locale: language })
+  }
 
   return (
-    <AppBar position="sticky">
-      <Container maxWidth="xl">
+    <AppBar position='sticky'>
+      <Container maxWidth='xl'>
         <Toolbar disableGutters>
           {/* Logo - Desktop */}
           <Typography
-            variant="h6"
+            variant='h6'
             noWrap
             sx={{
               mr: 2,
-              display: { xs: "none", md: "flex" },
+              display: { xs: 'none', md: 'flex' },
               fontWeight: 700,
-              color: "inherit",
-              textDecoration: "none",
+              color: 'inherit',
+              textDecoration: 'none'
             }}
           >
             LOGO
           </Typography>
 
           {/* Mobile Menu */}
-          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
-              size="large"
-              aria-label="menu"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
+              size='large'
+              aria-label='menu'
+              aria-controls='menu-appbar'
+              aria-haspopup='true'
               onClick={handleOpenNavMenu}
-              color="inherit"
+              color='inherit'
             >
               <MenuIcon />
             </IconButton>
             <Menu
-              id="menu-appbar"
+              id='menu-appbar'
               anchorEl={anchorElNav}
               anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
+                vertical: 'bottom',
+                horizontal: 'left'
               }}
               keepMounted
               transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
+                vertical: 'top',
+                horizontal: 'left'
               }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
               sx={{
-                display: { xs: "block", md: "none" },
+                display: { xs: 'block', md: 'none' }
               }}
             >
-              {pages.map((page) => (
+              {pages.map(page => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                  <Typography textAlign='center'>{page}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -92,28 +93,24 @@ const Header = () => {
 
           {/* Logo - Mobile */}
           <Typography
-            variant="h5"
+            variant='h5'
             noWrap
             sx={{
               mr: 2,
-              display: { xs: "flex", md: "none" },
+              display: { xs: 'flex', md: 'none' },
               flexGrow: 1,
               fontWeight: 700,
-              color: "inherit",
-              textDecoration: "none",
+              color: 'inherit',
+              textDecoration: 'none'
             }}
           >
             LOGO
           </Typography>
 
           {/* Desktop Menu */}
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+            {pages.map(page => (
+              <Button key={page} onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
                 {page}
               </Button>
             ))}
@@ -121,14 +118,17 @@ const Header = () => {
 
           {/* Theme Toggle */}
           <Box sx={{ flexGrow: 0 }}>
-            <IconButton sx={{ ml: 1 }} onClick={toggleTheme} color="inherit">
-              {mode === "dark" ? <Brightness7 /> : <Brightness4 />}
+            <IconButton sx={{ ml: 1 }} onClick={toggleTheme} color='inherit'>
+              {mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
             </IconButton>
+            <Button onClick={() => changeLanguage('tr')} sx={{ my: 2, color: 'white', display: 'block' }}>
+              Git
+            </Button>
           </Box>
         </Toolbar>
       </Container>
     </AppBar>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

@@ -1,72 +1,61 @@
-"use client";
+'use client'
 
-import {
-  createTheme,
-  ThemeProvider as MUIThemeProvider,
-  CssBaseline,
-} from "@mui/material";
-import { createContext, useContext, useMemo, useState } from "react";
-import { ThemeOptions } from "@mui/material/styles";
+import { createTheme, ThemeProvider as MUIThemeProvider, CssBaseline } from '@mui/material'
+import { createContext, useContext, useMemo, useState } from 'react'
+import { ThemeOptions } from '@mui/material/styles'
 
 type ThemeContextType = {
-  toggleTheme: () => void;
-  mode: "light" | "dark";
-};
+  toggleTheme: () => void
+  mode: 'light' | 'dark'
+}
 
 const ThemeContext = createContext<ThemeContextType>({
   toggleTheme: () => {},
-  mode: "light",
-});
+  mode: 'light'
+})
 
-export const useTheme = () => useContext(ThemeContext);
+export const useTheme = () => useContext(ThemeContext)
 
 const lightTheme: ThemeOptions = {
   palette: {
-    mode: "light",
+    mode: 'light',
     primary: {
-      main: "#1976d2",
+      main: '#1976d2'
     },
     secondary: {
-      main: "#dc004e",
-    },
-  },
-};
+      main: '#dc004e'
+    }
+  }
+}
 
 const darkTheme: ThemeOptions = {
   palette: {
-    mode: "dark",
+    mode: 'dark',
     primary: {
-      main: "#90caf9",
+      main: '#90caf9'
     },
     secondary: {
-      main: "#f48fb1",
-    },
-  },
-};
+      main: '#f48fb1'
+    }
+  }
+}
 
-export default function ThemeProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const [mode, setMode] = useState<"light" | "dark">("light");
+export default function ThemeProvider({ children }: { children: React.ReactNode }) {
+  const [mode, setMode] = useState<'light' | 'dark'>('light')
 
   const toggleTheme = () => {
-    setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
-  };
+    setMode(prevMode => (prevMode === 'light' ? 'dark' : 'light'))
+  }
 
-  const theme = useMemo(
-    () => createTheme(mode === "light" ? lightTheme : darkTheme),
-    [mode]
-  );
+  const theme = useMemo(() => createTheme(mode === 'light' ? lightTheme : darkTheme), [mode])
 
   const value = useMemo(
     () => ({
       toggleTheme,
-      mode,
+      mode
     }),
     [mode]
-  );
+  )
 
   return (
     <ThemeContext.Provider value={value}>
@@ -75,5 +64,5 @@ export default function ThemeProvider({
         {children}
       </MUIThemeProvider>
     </ThemeContext.Provider>
-  );
+  )
 }
