@@ -7,9 +7,7 @@ import { AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Button, 
 import { Menu as MenuIcon, Brightness4, Brightness7 } from '@mui/icons-material'
 import { useTheme } from '@/src/providers/ThemeProvider'
 
-import { useRouter, usePathname } from '@/src/navigation'
-
-import { useSearchParams } from 'next/navigation'
+import ChangeLanguage from '../ChangeLanguage'
 
 const pages = ['Home', 'About', 'Projects', 'Contact']
 
@@ -17,21 +15,12 @@ const Header = () => {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null)
   const { toggleTheme, mode } = useTheme()
 
-  const router = useRouter()
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
-
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget)
   }
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null)
-  }
-
-  const changeLanguage = (language: string) => {
-    const newSearchParams = new URLSearchParams(searchParams)
-    router.push(`${pathname}?${newSearchParams.toString()}`, { locale: language })
   }
 
   return (
@@ -118,12 +107,13 @@ const Header = () => {
 
           {/* Theme Toggle */}
           <Box sx={{ flexGrow: 0 }}>
+            <ChangeLanguage />
+          </Box>
+
+          <Box sx={{ flexGrow: 0 }}>
             <IconButton sx={{ ml: 1 }} onClick={toggleTheme} color='inherit'>
               {mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
             </IconButton>
-            <Button onClick={() => changeLanguage('tr')} sx={{ my: 2, color: 'white', display: 'block' }}>
-              Git
-            </Button>
           </Box>
         </Toolbar>
       </Container>
