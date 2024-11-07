@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, MouseEvent } from 'react'
 import { IconButton, Menu, MenuItem, Typography } from '@mui/material'
 import TranslateIcon from '@mui/icons-material/Translate'
 import { locales } from '../navigation'
@@ -8,24 +8,23 @@ import { useRouter, usePathname } from '@/src/navigation'
 import { useSearchParams } from 'next/navigation'
 
 const ChangeLanguage = () => {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
-
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
 
   const pathname = usePathname()
   const router = useRouter()
   const searchParams = useSearchParams()
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
   }
-  const handleClose = (local: any) => {
+
+  const handleClose = (locale: string) => {
     setAnchorEl(null)
-    changeLanguage(local)
+    changeLanguage(locale)
   }
 
   const changeLanguage = (language: string) => {
-    debugger
     const newSearchParams = new URLSearchParams(searchParams)
     router.push(`${pathname}?${newSearchParams.toString()}`, { locale: language })
   }
@@ -39,23 +38,21 @@ const ChangeLanguage = () => {
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
       >
-        {<TranslateIcon htmlColor='white' />}
+        <TranslateIcon htmlColor='white' />
       </IconButton>
 
       <Menu
         id='basic-menu'
         anchorEl={anchorEl}
         open={open}
-        onClose={handleClose}
+        onClose={() => handleClose('')}
         MenuListProps={{
           'aria-labelledby': 'basic-button'
         }}
       >
-        {locales.map((locale: any) => (
+        {locales.map(locale => (
           <MenuItem key={locale} onClick={() => handleClose(locale)}>
-            <Typography sx={{ textTransform: "uppercase"}}>
-            {locale}
-            </Typography>
+            <Typography sx={{ textTransform: 'uppercase' }}>{locale}</Typography>
           </MenuItem>
         ))}
       </Menu>

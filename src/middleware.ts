@@ -11,7 +11,7 @@ const intlMiddleware = createIntlMiddleware({
   defaultLocale: 'tr'
 })
 
-async function setPidCookie(request: NextRequest, response: NextResponse) {
+async function setPidCookie(request: NextRequest, response: NextResponse): Promise<NextResponse> {
   const pid: string = crypto.randomUUID()
   if (!request.cookies.has('m-pid') && response.cookies) {
     response.cookies.set({
@@ -27,8 +27,8 @@ async function setPidCookie(request: NextRequest, response: NextResponse) {
   return response
 }
 
-export async function middleware(request: NextRequest) {
-  var response
+export async function middleware(request: NextRequest): Promise<NextResponse> {
+  let response: NextResponse
 
   if (
     !request.nextUrl.pathname.startsWith('/api') &&
@@ -44,11 +44,12 @@ export async function middleware(request: NextRequest) {
   } else {
     response = NextResponse.next()
   }
+
   response = await setPidCookie(request, response)
   return response
 }
 
-export const config: { matcher: string[] } = {
+export const config = {
   matcher: ['/((?!_next).*)']
 }
 
