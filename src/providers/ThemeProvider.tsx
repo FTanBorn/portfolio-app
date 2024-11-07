@@ -19,15 +19,22 @@ const ThemeContext = createContext<ThemeContextType>({
 export const useTheme = () => useContext(ThemeContext)
 
 export default function ThemeProvider({ children }: { children: React.ReactNode }) {
-  // Initialize theme from localStorage or default to dark
-  const [mode, setMode] = useState<'light' | 'dark'>(() => {
+  // Initialize with default value
+  const [mode, setMode] = useState<'light' | 'dark'>('dark')
+
+  // Move localStorage logic to useEffect
+  useEffect(() => {
     const storedMode = localStorage.getItem(THEME_MODE_KEY) as 'light' | 'dark' | null
-    return storedMode || 'dark'
-  })
+    if (storedMode) {
+      setMode(storedMode)
+    }
+  }, [])
 
   useEffect(() => {
-    document.documentElement.dataset.theme = mode
-    localStorage.setItem(THEME_MODE_KEY, mode)
+    if (typeof window !== 'undefined') {
+      document.documentElement.dataset.theme = mode
+      localStorage.setItem(THEME_MODE_KEY, mode)
+    }
   }, [mode])
 
   const toggleTheme = () => {

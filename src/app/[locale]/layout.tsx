@@ -1,10 +1,21 @@
+// app/[locale]/layout.tsx
 import ThemeProvider from '@/src/providers/ThemeProvider'
 import Header from '@/src/components/common/Header'
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export function generateStaticParams() {
+  return [{ locale: 'en' }, { locale: 'tr' }]
+}
+
+export default function LocaleLayout({
+  children,
+  params: { locale }
+}: {
+  children: React.ReactNode
+  params: { locale: string }
+}) {
   return (
-    <html lang='en'>
-      <body>
+    <html lang={locale} suppressHydrationWarning>
+      <body suppressHydrationWarning>
         <ThemeProvider>
           <Header />
           <main>{children}</main>
