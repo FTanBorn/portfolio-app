@@ -7,8 +7,6 @@ import { AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Button, 
 import { Menu as MenuIcon, Brightness4, Brightness7 } from '@mui/icons-material'
 import { useTheme } from '@/src/providers/ThemeProvider'
 
-import ChangeLanguage from '../ChangeLanguage'
-
 const pages = ['Home', 'About', 'Projects', 'Contact']
 
 const Header = () => {
@@ -103,11 +101,6 @@ const Header = () => {
                 {page}
               </Button>
             ))}
-          </Box>
-
-          {/* Theme Toggle */}
-          <Box sx={{ flexGrow: 0 }}>
-            <ChangeLanguage />
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
