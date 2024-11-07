@@ -37,10 +37,18 @@ const nextConfig = withNextIntl({
   images: {
     unoptimized: true
   },
-  output: 'export', // This enables static export
+  output: 'export', // Static export için
+  modularizeImports: {
+    '@mui/material': {
+      transform: '@mui/material/{{member}}'
+    },
+    '@mui/icons-material': {
+      transform: '@mui/icons-material/{{member}}'
+    }
+  },
   i18n: {
-    locales: ['en', 'tr'], // List of available locales
-    defaultLocale: 'en' // Default locale for the app
+    locales: ['en', 'tr'],
+    defaultLocale: 'en'
   },
   async headers() {
     return [
