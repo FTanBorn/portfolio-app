@@ -1,28 +1,6 @@
 /** @type {import('next').NextConfig} */
 const withNextIntl = require('next-intl/plugin')()
 
-const nextConfig = withNextIntl({
-  reactStrictMode: false,
-  typescript: {
-    ignoreBuildErrors: true
-  },
-  transpilePackages: ['mui-file-input'],
-  images: {
-    unoptimized: true
-  },
-  async headers() {
-    return [
-      {
-        // Apply these headers to all routes in your application.
-        source: '/:path*',
-        headers: advancedHeaders
-      }
-    ]
-  }
-})
-
-module.exports = nextConfig
-
 const advancedHeaders = [
   {
     key: 'X-DNS-Prefetch-Control',
@@ -49,3 +27,29 @@ const advancedHeaders = [
     value: 'origin-when-cross-origin'
   }
 ]
+
+const nextConfig = withNextIntl({
+  reactStrictMode: false,
+  typescript: {
+    ignoreBuildErrors: true
+  },
+  transpilePackages: ['mui-file-input'],
+  images: {
+    unoptimized: true
+  },
+  output: 'export', // This enables static export
+  i18n: {
+    locales: ['en', 'tr'], // List of available locales
+    defaultLocale: 'en' // Default locale for the app
+  },
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: advancedHeaders
+      }
+    ]
+  }
+})
+
+module.exports = nextConfig
