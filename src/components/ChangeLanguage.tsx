@@ -3,9 +3,12 @@
 import React, { useState, MouseEvent } from 'react'
 import { IconButton, Menu, MenuItem, Typography } from '@mui/material'
 import TranslateIcon from '@mui/icons-material/Translate'
-import { locales } from '../navigation'
 import { useRouter, usePathname } from '@/src/navigation'
 import { useSearchParams } from 'next/navigation'
+
+// Locale türleri sabit olarak tanımlandı
+const locales = ['en', 'tr'] as const
+type Locale = (typeof locales)[number]
 
 const ChangeLanguage = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -19,12 +22,11 @@ const ChangeLanguage = () => {
     setAnchorEl(event.currentTarget)
   }
 
-  const handleClose = (locale: string) => {
+  const handleClose = () => {
     setAnchorEl(null)
-    changeLanguage(locale)
   }
 
-  const changeLanguage = (language: string) => {
+  const changeLanguage = (language: Locale) => {
     const newSearchParams = new URLSearchParams(searchParams)
     router.push(`${pathname}?${newSearchParams.toString()}`, { locale: language })
   }
@@ -45,13 +47,19 @@ const ChangeLanguage = () => {
         id='basic-menu'
         anchorEl={anchorEl}
         open={open}
-        onClose={() => handleClose('')}
+        onClose={handleClose}
         MenuListProps={{
           'aria-labelledby': 'basic-button'
         }}
       >
         {locales.map(locale => (
-          <MenuItem key={locale} onClick={() => handleClose(locale)}>
+          <MenuItem
+            key={locale}
+            onClick={() => {
+              changeLanguage(locale)
+              handleClose()
+            }}
+          >
             <Typography sx={{ textTransform: 'uppercase' }}>{locale}</Typography>
           </MenuItem>
         ))}
