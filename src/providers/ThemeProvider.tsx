@@ -1,47 +1,35 @@
 'use client'
 
 import { createTheme, ThemeProvider as MUIThemeProvider, CssBaseline } from '@mui/material'
-import { createContext, useContext, useMemo, useState } from 'react'
+import { createContext, useContext, useMemo, useState, useEffect } from 'react'
 import { ThemeOptions } from '@mui/material/styles'
+import { darkTheme, lightTheme } from './theme'
 
 type ThemeContextType = {
   toggleTheme: () => void
   mode: 'light' | 'dark'
 }
 
+const THEME_MODE_KEY = 'themeMode'
+
 const ThemeContext = createContext<ThemeContextType>({
   toggleTheme: () => {},
-  mode: 'light'
+  mode: 'dark'
 })
 
 export const useTheme = () => useContext(ThemeContext)
 
-const lightTheme: ThemeOptions = {
-  palette: {
-    mode: 'light',
-    primary: {
-      main: '#1976d2'
-    },
-    secondary: {
-      main: '#dc004e'
-    }
-  }
-}
-
-const darkTheme: ThemeOptions = {
-  palette: {
-    mode: 'dark',
-    primary: {
-      main: '#90caf9'
-    },
-    secondary: {
-      main: '#f48fb1'
-    }
-  }
-}
-
 export default function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [mode, setMode] = useState<'light' | 'dark'>('light')
+  // Initialize theme from localStorage or default to dark
+  const [mode, setMode] = useState<'light' | 'dark'>(() => {
+    const storedMode = localStorage.getItem(THEME_MODE_KEY) as 'light' | 'dark' | null
+    return storedMode || 'dark'
+  })
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = mode
+    localStorage.setItem(THEME_MODE_KEY, mode)
+  }, [mode])
 
   const toggleTheme = () => {
     setMode(prevMode => (prevMode === 'light' ? 'dark' : 'light'))
