@@ -1,21 +1,14 @@
-import { Container, Typography, Box } from "@mui/material";
+import { Container, Typography, Box, Portal, Stack } from '@mui/material'
+import PortfolioHeader from '../components/my-portfolio/PortfolioHeader'
+import AboutSection from '../components/my-portfolio/PortfolioAbout'
+import PortfolioEducation from '../components/my-portfolio/PortfolioEducation'
 
 export default function Home() {
   return (
-    <Container maxWidth="lg">
-      <Box sx={{ mt: 8, textAlign: "center" }}>
-        <Typography variant="h2" component="h1" gutterBottom>
-          Welcome to My Portfolio
-        </Typography>
-        <Typography
-          variant="h5"
-          component="h2"
-          gutterBottom
-          color="text.secondary"
-        >
-          Full Stack Developer
-        </Typography>
-      </Box>
-    </Container>
-  );
+    <>
+      <PortfolioHeader />
+      <AboutSection />
+      <PortfolioEducation />
+    </>
+  )
 }

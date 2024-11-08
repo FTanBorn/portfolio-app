@@ -1,114 +1,105 @@
 'use client'
 
 import { useState } from 'react'
-
-import { AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Button, MenuItem } from '@mui/material'
-
-import { Menu as MenuIcon, Brightness4, Brightness7 } from '@mui/icons-material'
+import { AppBar, Box, IconButton, Typography, Menu, Container, Button, MenuItem, Stack } from '@mui/material'
+import { Brightness4, Brightness7, Menu as MenuIcon } from '@mui/icons-material'
 import { useTheme } from '@/src/providers/ThemeProvider'
-
-const pages = ['Home', 'About', 'Projects', 'Contact']
+import { alpha } from '@mui/material/styles'
 
 const Header = () => {
-  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null)
   const { toggleTheme, mode } = useTheme()
+  const [anchorEl, setAnchorEl] = useState(null)
 
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget)
+  const pages = ['Anasayfa', 'Hizmetler']
+
+  const handleOpenMenu = (event: any) => {
+    setAnchorEl(event.currentTarget)
   }
 
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null)
+  const handleCloseMenu = () => {
+    setAnchorEl(null)
   }
 
   return (
-    <AppBar position='sticky'>
+    <AppBar
+      position='sticky'
+      elevation={0}
+      sx={{
+        bgcolor: 'background.paper',
+        borderBottom: 1,
+        borderColor: theme => alpha(theme.palette.divider, 0.1)
+      }}
+    >
       <Container maxWidth='xl'>
-        <Toolbar disableGutters>
-          {/* Logo - Desktop */}
-          <Typography
-            variant='h6'
-            noWrap
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontWeight: 700,
-              color: 'inherit',
-              textDecoration: 'none'
-            }}
-          >
-            LOGO
-          </Typography>
-
-          {/* Mobile Menu */}
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size='large'
-              aria-label='menu'
-              aria-controls='menu-appbar'
-              aria-haspopup='true'
-              onClick={handleOpenNavMenu}
-              color='inherit'
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id='menu-appbar'
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left'
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left'
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            py: 2
+          }}
+        >
+          <Stack direction={'row'} alignItems={'center'}>
+            <Typography
+              noWrap
               sx={{
-                display: { xs: 'block', md: 'none' }
+                mr: 1,
+                fontWeight: 600,
+                fontSize: 20,
+                color: 'text.primary'
               }}
             >
-              {pages.map(page => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign='center'>{page}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+              FURKAN TANDOĞAN /
+            </Typography>
+            <Typography
+              variant='subtitle2'
+              noWrap
+              sx={{
+                fontWeight: 400,
+                color: 'text.secondary'
+              }}
+            >
+              Front-End Developer
+            </Typography>
+          </Stack>
 
-          {/* Logo - Mobile */}
-          <Typography
-            variant='h5'
-            noWrap
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontWeight: 700,
-              color: 'inherit',
-              textDecoration: 'none'
-            }}
-          >
-            LOGO
-          </Typography>
-
-          {/* Desktop Menu */}
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          {/* Desktop Navigation */}
+          <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 3, alignItems: 'center' }}>
             {pages.map(page => (
-              <Button key={page} onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
+              <Button
+                key={page}
+                sx={{
+                  color: 'text.primary',
+                  '&:hover': {
+                    color: 'primary.main'
+                  }
+                }}
+              >
                 {page}
               </Button>
             ))}
-          </Box>
-
-          <Box sx={{ flexGrow: 0 }}>
-            <IconButton sx={{ ml: 1 }} onClick={toggleTheme} color='inherit'>
+            <IconButton onClick={toggleTheme} color='default'>
               {mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
             </IconButton>
           </Box>
-        </Toolbar>
+
+          {/* Mobile Navigation */}
+          <Box sx={{ display: { xs: 'flex', md: 'none' }, alignItems: 'center' }}>
+            <IconButton size='large' onClick={handleOpenMenu} color='default'>
+              <MenuIcon />
+            </IconButton>
+            <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleCloseMenu} sx={{ mt: 1 }}>
+              {pages.map(page => (
+                <MenuItem key={page} onClick={handleCloseMenu}>
+                  <Typography textAlign='center'>{page}</Typography>
+                </MenuItem>
+              ))}
+              <IconButton onClick={toggleTheme} color='default'>
+                {mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
+              </IconButton>
+            </Menu>
+          </Box>
+        </Box>
       </Container>
     </AppBar>
   )
