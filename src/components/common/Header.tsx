@@ -8,14 +8,13 @@ import { alpha } from '@mui/material/styles'
 
 const Header = () => {
   const { toggleTheme, mode } = useTheme()
-  const [anchorEl, setAnchorEl] = useState(null)
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
 
   const pages = ['Anasayfa', 'Hizmetler']
 
-  const handleOpenMenu = (event: any) => {
+  const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
   }
-
   const handleCloseMenu = () => {
     setAnchorEl(null)
   }

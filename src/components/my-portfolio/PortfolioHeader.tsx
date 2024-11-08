@@ -2,13 +2,9 @@
 
 import { Box, Container, Typography, Stack, IconButton } from '@mui/material'
 import { Instagram, GitHub, LinkedIn, Twitter } from '@mui/icons-material'
-import { useTheme } from '@mui/material/styles'
 import ImageMe from '../../../public/images/image.png'
 
 const HeroSection = () => {
-  const theme = useTheme()
-  const isDark = theme.palette.mode === 'dark'
-
   return (
     <Box
       sx={{

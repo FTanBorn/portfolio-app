@@ -1,7 +1,7 @@
 'use client'
 
-import { Box, Container, Typography, Grid, Card, Chip, Stack, IconButton } from '@mui/material'
-import { School, Work, Code, LocationOn, Email, Phone, Language } from '@mui/icons-material'
+import { Box, Container, Typography, Grid, Card, Chip, Stack } from '@mui/material'
+import { School, Code, LocationOn, Email, Phone, Language } from '@mui/icons-material'
 
 const PortfolioEducation = () => {
   const skills = [
